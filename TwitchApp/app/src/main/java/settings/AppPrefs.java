@@ -38,7 +38,7 @@ public class AppPrefs {
     }
 
     public  String getTwitchName() {
-        return  "varshatertipally";
+        return  "varshateratipally";
     }
 
     public void setUserInfo(UserInfo userInfo) {

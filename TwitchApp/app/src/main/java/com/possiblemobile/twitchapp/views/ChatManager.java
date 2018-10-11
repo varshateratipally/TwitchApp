@@ -177,7 +177,7 @@ public class ChatManager extends AsyncTask<Void, ChatManager.ProgressUpdate, Voi
                     break;
                 }
 
-                if (line.contains("004 " + user + " :")) {
+                if (line.contains("001 " + user + " :")) {
                     Log.d(LOG_TAG, "<" + line);
                     Log.d(LOG_TAG, "Connected >> " + user + " ~ irc.twitch.tv");
                     onProgressUpdate(new ProgressUpdate(ProgressUpdate.UpdateType.ON_CONNECTED));
