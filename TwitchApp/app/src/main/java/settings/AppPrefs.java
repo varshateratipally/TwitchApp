@@ -31,6 +31,16 @@ public class AppPrefs {
     public static final String CLIENT_ID =  "vgl10ogqr6s8xqotaxc5256log6txm";
     private String TWITCH_TOKEN = "4q9tjj1klurxptl8e0zz692w44b0qj";
     private static UserInfo userInfo;
+    private boolean isUserLoggedIn = false;
+
+    public void setUserLoggedIn(boolean userLoggedIn) {
+        isUserLoggedIn = userLoggedIn;
+    }
+
+    public void setTwitchToken(String value) {
+        this.TWITCH_TOKEN = value;
+    }
+
 
 
     public String getTwitchAccessToken() {
@@ -38,7 +48,7 @@ public class AppPrefs {
     }
 
     public  String getTwitchName() {
-        return  "varshateratipally";
+        return  userInfo == null? "varshateratipally": userInfo.getName();
     }
 
     public void setUserInfo(UserInfo userInfo) {
@@ -50,7 +60,7 @@ public class AppPrefs {
     }
 
     public boolean isUserLoggedIn() {
-        return true;
+        return isUserLoggedIn;
     }
 
     public static int dpToPixels(Context context, float dp) {

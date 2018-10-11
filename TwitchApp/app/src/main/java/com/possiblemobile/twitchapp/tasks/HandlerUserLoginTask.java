@@ -39,6 +39,8 @@ public class HandlerUserLoginTask extends AsyncTask<Object, Void, UserInfo> {
                 public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                     if (response.isSuccessful()) {
                         appPrefs.setUserInfo(response.body());
+                        appPrefs.setUserLoggedIn(true);
+                        appPrefs.setTwitchToken(token);
                         mLoginActivity.handleLoginSuccess();
                     }
                 }
