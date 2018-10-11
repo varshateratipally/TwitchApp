@@ -122,7 +122,7 @@ public class AppPrefs {
         Bitmap bitmap = null;
 
         try {
-            HttpURLConnection connection = openConnection(new URL(url));
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.connect();
             InputStream input = connection.getInputStream();
             bitmap = BitmapFactory.decodeStream(input);
