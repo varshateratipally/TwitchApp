@@ -386,4 +386,8 @@ public class ChatManager extends AsyncTask<Void, ChatManager.ProgressUpdate, Voi
             this.message = message;
         }
     }
+
+    public Bitmap getSubscriberIcon() {
+        return subscriberIcon;
+    }
 }

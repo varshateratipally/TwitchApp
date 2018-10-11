@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.possiblemobile.twitchapp.model.ChannelInfo;
 import com.possiblemobile.twitchapp.R;
+
+import java.util.ArrayList;
 import java.util.List;
 import settings.AppPrefs;
 import com.possiblemobile.twitchapp.tasks.SendMessageTask;
@@ -35,7 +37,7 @@ public class ChatFragment extends Fragment {
     private ChatAdapter mChatAdapter;
     private ChatManager chatManager;
     private ChannelInfo mChannelInfo;
-    private AppPrefs settings;
+    private AppPrefs appPrefs;
 
     private RelativeLayout mChatInputLayout;
     private RecyclerView mRecyclerView;
@@ -44,6 +46,7 @@ public class ChatFragment extends Fragment {
     private TextView mChatStatus;
     private View chatInputDivider;
     private FrameLayout mChatStatusBar;
+
 
     private ColorFilter defaultBackgroundColor;
 
@@ -64,7 +67,7 @@ public class ChatFragment extends Fragment {
         final View mRootView = inflater.inflate(R.layout.fragment_chat, container, false);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setStackFromEnd(true);
-        settings = new AppPrefs();
+        appPrefs = new AppPrefs();
 
         mSendText = mRootView.findViewById(R.id.send_message_textview);
         mSendButton = mRootView.findViewById(R.id.chat_send_ic);
@@ -83,7 +86,7 @@ public class ChatFragment extends Fragment {
 
         mChannelInfo = getArguments().getParcelable(getString(R.string.stream_fragment_streamerInfo));
 
-        if (!settings.isUserLoggedIn()) {
+        if (!appPrefs.isUserLoggedIn()) {
             userNotLoggedIn();
         } else {
             setupChatInput();
@@ -289,8 +292,13 @@ public class ChatFragment extends Fragment {
         }
         mSendText.setText("");
 
-        SendMessageTask sendMessageTask = new SendMessageTask(chatManager, message);
+        ChatMessage chatMessage = new ChatMessage(message, new AppPrefs().getTwitchName(), "#000000", false,false, false,
+                new ArrayList<ChatEmoji>(),chatManager.getSubscriberIcon(), false);
+        mChatAdapter.add(chatMessage);
+
+        SendMessageTask sendMessageTask = new SendMessageTask(chatManager, chatMessage.toString());
         sendMessageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
     }
 
     public void addMessage(ChatMessage message) {
