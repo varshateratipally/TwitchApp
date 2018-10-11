@@ -79,10 +79,10 @@ public class AppPrefs {
         try {
             url = new URL(urlToRead);
 
-            conn = openConnection(url);
+            conn = (HttpURLConnection) url.openConnection();
 
-            conn.setReadTimeout(5000);
-            conn.setConnectTimeout(3000);
+            conn.setReadTimeout(6000);
+            conn.setConnectTimeout(5000);
             conn.setRequestProperty("Client-ID", AppPrefs.CLIENT_ID);
             conn.setRequestProperty("Accept", "application/vnd.twitchtv.v5+json");
             conn.setRequestMethod("GET");
@@ -104,19 +104,9 @@ public class AppPrefs {
                 conn.disconnect();
         }
 
-        if (result.length() == 0 ||( result.length() >1 && result.charAt(0)!='{')) {
-            Log.v("URL TO JSON String", result);
-            Log.v("URL TO JSON STRING", urlToRead + " did not successfully get read");
-            Log.v("URL TO JSON STRING", "Result of reading - " + result);
-        }
-
         return result;
     }
 
-    public static HttpURLConnection openConnection(URL url) throws IOException {
-
-        return (HttpURLConnection) url.openConnection();
-    }
 
     public static Bitmap getImageFromStorage(String key, Context context) throws IOException {
         InputStream fileIn = context.openFileInput(key);
