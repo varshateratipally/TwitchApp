@@ -10,8 +10,6 @@ import java.util.Random;
 import settings.AppPrefs;
 
 public class GetLiveStreamURLTask extends AsyncTask<String, Void, String> {
-
-    private String LOG_TAG = getClass().getSimpleName();
     private AsyncResponse callback;
 
     public interface AsyncResponse {

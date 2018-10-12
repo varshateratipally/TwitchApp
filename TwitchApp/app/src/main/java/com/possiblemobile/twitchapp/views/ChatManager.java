@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 import settings.AppPrefs;
 
 public class ChatManager extends AsyncTask<Void, ChatManager.ProgressUpdate, Void> {
-    private final String LOG_TAG = getClass().getSimpleName();
 
     private Pattern roomstatePattern = Pattern.compile("@broadcaster-lang=(.*);r9k=(0|1);slow=(0|\\d+);subs-only=(0|1)"),
             userStatePattern = Pattern.compile("color=(#?\\w*);display-name=(.+);emote-sets=(.+);mod=(0|1);subscriber=(0|1);(turbo=(0|1)|user)"),
@@ -173,13 +172,10 @@ public class ChatManager extends AsyncTask<Void, ChatManager.ProgressUpdate, Voi
             while ((line = reader.readLine()) != null) {
                 if (isStopping) {
                     leaveChannel();
-                    Log.d(LOG_TAG, "Stopping chat for " + channelName);
                     break;
                 }
 
                 if (line.contains("001 " + user + " :")) {
-                    Log.d(LOG_TAG, "<" + line);
-                    Log.d(LOG_TAG, "Connected >> " + user + " ~ irc.twitch.tv");
                     onProgressUpdate(new ProgressUpdate(ProgressUpdate.UpdateType.ON_CONNECTED));
                     sendRawMessage("CAP REQ :twitch.tv/tags twitch.tv/commands");
                     sendRawMessage("JOIN " + hashChannel + "\r\n");
@@ -194,13 +190,10 @@ public class ChatManager extends AsyncTask<Void, ChatManager.ProgressUpdate, Voi
                 } else if (line.contains("PRIVMSG")) {
                     handleMessage(line);
                 } else if (line.toLowerCase().contains("disconnected"))	{
-                    Log.e(LOG_TAG, "Disconnected - trying to reconnect");
                     onProgressUpdate(new ProgressUpdate(ProgressUpdate.UpdateType.ON_RECONNECTING));
                     connect(address, port); //ToDo: Test if chat keeps playing if connection is lost
                 } else if(line.contains("NOTICE * :Error logging in")) {
                     onProgressUpdate(new ProgressUpdate(ProgressUpdate.UpdateType.ON_CONNECTION_FAILED));
-                } else {
-                    Log.d(LOG_TAG, "<" + line);
                 }
             }
 
@@ -262,8 +255,6 @@ public class ChatManager extends AsyncTask<Void, ChatManager.ProgressUpdate, Voi
                 userIsTurbo = userstateMatcher.group(7).equals("1");
             }
 
-        } else {
-            Log.e(LOG_TAG, "Failed to find userstate pattern in: \n" + line);
         }
     }
 
@@ -284,8 +275,6 @@ public class ChatManager extends AsyncTask<Void, ChatManager.ProgressUpdate, Voi
 
             ChatMessage chatMessage = new ChatMessage(message, displayName, color, isMod, isTurbo, isSubscriber, emotes, subscriberIcon, highlight);
             publishProgress(new ProgressUpdate(ProgressUpdate.UpdateType.ON_MESSAGE, chatMessage));
-        } else {
-            Log.e(LOG_TAG, "Failed to find message pattern in: \n" + line);
         }
     }
 

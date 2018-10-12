@@ -20,10 +20,9 @@ import com.possiblemobile.twitchapp.views.StreamFragment;
 
 public abstract class StreamVideoActivity extends AppCompatActivity implements SensorEventListener {
 
-    private static final int SENSOR_DELAY = 500 * 1000; // 500ms
+    private static final int SENSOR_DELAY = 400000;
     private static final int FROM_RADS_TO_DEGS = -57;
 
-    private String LOG_TAG = getClass().getSimpleName();
     private Sensor mRotationSensor;
     public StreamFragment mStreamFragment;
 
@@ -66,7 +65,6 @@ public abstract class StreamVideoActivity extends AppCompatActivity implements S
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // Do nothing :)
     }
 
     @Override
@@ -102,9 +100,7 @@ public abstract class StreamVideoActivity extends AppCompatActivity implements S
 
         if (roll > -45 && roll < 45) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-            Log.d(LOG_TAG, "Requesting undefined");
         }
-        Log.d(LOG_TAG, "Roll: " + roll);
     }
 
     protected void resetStream() {
@@ -116,11 +112,6 @@ public abstract class StreamVideoActivity extends AppCompatActivity implements S
     @Override
     public void onResume() {
         super.onResume();
-        if (getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT) {
-            Log.d(LOG_TAG, "Orientations is reverse portrait");
-        }
-
-        Log.d(LOG_TAG, "Current orientation: " + getResources().getConfiguration().orientation);
     }
 
     @Override
@@ -168,7 +159,6 @@ public abstract class StreamVideoActivity extends AppCompatActivity implements S
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // Call the super method as we also want the user to go all the way back to last mActivity if the user is in full screen mode
                 if (mStreamFragment != null) {
                     if (!mStreamFragment.isVideoInterfaceShowing()) {
                         return false;
